@@ -52,7 +52,6 @@ def predict():
     
     return jsonify({'prediction': result})
 
+# สำหรับ Vercel Serverless Functions
 if __name__ == "__main__":
-    # ใช้ PORT จาก environment variable หากมี
-    port = int(os.environ.get('PORT', 5000))  # ตรวจสอบค่า PORT จาก environment
-    app.run(host='0.0.0.0', port=port, debug=False)  # ปิด debug mode สำหรับ production
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
