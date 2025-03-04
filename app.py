@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
-import subprocess
-import os
+import pickle
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -47,13 +47,6 @@ def predict():
         result = f"✅ ลูกค้ารายนี้มีแนวโน้มที่จะอยู่ต่อ ({(1 - probability):.2%} ความน่าจะเป็น)"
     
     return jsonify({'prediction': result})
-
-@app.route('/run_streamlit')
-def run_streamlit():
-    # ใช้ subprocess เพื่อรัน Streamlit
-    process = subprocess.Popen(['streamlit', 'run', 'streamlit_app.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout, stderr = process.communicate()
-    return f"Streamlit app running with output: {stdout}, errors: {stderr}"
 
 if __name__ == "__main__":
     app.run(debug=True)
