@@ -27,12 +27,15 @@ def predict():
     input_df = pd.DataFrame([[complain, age, is_active, num_products, geography, balance]],
                             columns=["Complain", "Age", "IsActiveMember", "NumOfProducts", "Geography", "Balance"])
 
-    # โหลดโมเดลและ scaler
-    with open("customer_churn_model.pkl", "rb") as model_file:
-        model = pickle.load(model_file)
+    try:
+        # โหลดโมเดลและ scaler
+        with open("customer_churn_model.pkl", "rb") as model_file:
+            model = pickle.load(model_file)
 
-    with open("scaler.pkl", "rb") as scaler_file:
-        scaler = pickle.load(scaler_file)
+        with open("scaler.pkl", "rb") as scaler_file:
+            scaler = pickle.load(scaler_file)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
     # ปรับขนาดข้อมูลด้วย StandardScaler
     input_data = scaler.transform(input_df)
@@ -52,4 +55,4 @@ def predict():
 if __name__ == "__main__":
     # ใช้ PORT จาก environment variable หากมี
     port = int(os.environ.get('PORT', 5000))  # ตรวจสอบค่า PORT จาก environment
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=False)  # ปิด debug mode สำหรับ production
