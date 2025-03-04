@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request, jsonify
 import pickle
 import pandas as pd
@@ -50,5 +51,5 @@ def predict():
 
 if __name__ == "__main__":
     # ใช้ PORT จาก environment variable หากมี
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 5000))  # ตรวจสอบค่า PORT จาก environment
     app.run(host='0.0.0.0', port=port, debug=True)
