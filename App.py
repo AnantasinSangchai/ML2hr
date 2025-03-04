@@ -1,0 +1,59 @@
+from flask import Flask, render_template, request, jsonify
+import subprocess
+import os
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    # รับค่าจากผู้ใช้
+    complain = int(request.form['complain'])
+    age = int(request.form['age'])
+    is_active = int(request.form['is_active'])
+    num_products = int(request.form['num_products'])
+    geography = request.form['geography']
+    balance = float(request.form['balance'])
+
+    # แปลงค่าหมวดหมู่เป็นตัวเลข
+    geo_map = {"France": 0, "Germany": 1, "Spain": 2}
+    geography = geo_map[geography]
+
+    # สร้าง DataFrame สำหรับโมเดล
+    input_df = pd.DataFrame([[complain, age, is_active, num_products, geography, balance]],
+                            columns=["Complain", "Age", "IsActiveMember", "NumOfProducts", "Geography", "Balance"])
+
+    # โหลดโมเดลและ scaler
+    with open("customer_churn_model.pkl", "rb") as model_file:
+        model = pickle.load(model_file)
+
+    with open("scaler.pkl", "rb") as scaler_file:
+        scaler = pickle.load(scaler_file)
+
+    # ปรับขนาดข้อมูลด้วย StandardScaler
+    input_data = scaler.transform(input_df)
+
+    # ทำนายผล
+    prediction = model.predict(input_data)
+    probability = model.predict_proba(input_data)[:, 1][0]
+
+    # ส่งผลลัพธ์
+    if prediction[0] == 1:
+        result = f"🚨 ลูกค้ารายนี้มีแนวโน้มที่จะเลิกใช้บริการ ({probability:.2%} ความน่าจะเป็น)"
+    else:
+        result = f"✅ ลูกค้ารายนี้มีแนวโน้มที่จะอยู่ต่อ ({(1 - probability):.2%} ความน่าจะเป็น)"
+    
+    return jsonify({'prediction': result})
+
+@app.route('/run_streamlit')
+def run_streamlit():
+    # ใช้ subprocess เพื่อรัน Streamlit
+    process = subprocess.Popen(['streamlit', 'run', 'streamlit_app.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = process.communicate()
+    return f"Streamlit app running with output: {stdout}, errors: {stderr}"
+
+if __name__ == "__main__":
+    app.run(debug=True)

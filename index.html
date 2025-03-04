@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Churn Prediction</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2 class="mt-4">🔍 Customer Churn Prediction</h2>
+        <form action="/predict" method="POST">
+            <div class="form-group">
+                <label for="complain">ลูกค้าเคยร้องเรียนหรือไม่?</label>
+                <select class="form-control" id="complain" name="complain">
+                    <option value="0">ไม่</option>
+                    <option value="1">ใช่</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="age">อายุของลูกค้า</label>
+                <input type="number" class="form-control" id="age" name="age" min="18" max="100" value="30">
+            </div>
+            <div class="form-group">
+                <label for="is_active">ลูกค้าเป็น Active Member หรือไม่?</label>
+                <select class="form-control" id="is_active" name="is_active">
+                    <option value="0">ไม่</option>
+                    <option value="1">ใช่</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="num_products">จำนวนผลิตภัณฑ์ที่ใช้</label>
+                <input type="number" class="form-control" id="num_products" name="num_products" min="1" max="4" value="1">
+            </div>
+            <div class="form-group">
+                <label for="geography">ประเทศของลูกค้า</label>
+                <select class="form-control" id="geography" name="geography">
+                    <option value="France">France</option>
+                    <option value="Germany">Germany</option>
+                    <option value="Spain">Spain</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="balance">ยอดเงินในบัญชี</label>
+                <input type="number" class="form-control" id="balance" name="balance" min="0.0" max="500000.0" value="50000.0">
+            </div>
+            <button type="submit" class="btn btn-primary">ทำนายผลลัพธ์</button>
+        </form>
+        <br>
+        <div id="result"></div>
+    </div>
+    <script>
+        // ใช้ JavaScript เพื่อจัดการการแสดงผลของการทำนายผล
+    </script>
+</body>
+</html>
