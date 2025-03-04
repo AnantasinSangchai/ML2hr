@@ -52,6 +52,8 @@ def predict():
     
     return jsonify({'prediction': result})
 
-# สำหรับ Vercel Serverless Functions
+# ปรับเปลี่ยนการเรียกใช้งาน `app.run()` ซึ่งเป็นเซิร์ฟเวอร์พัฒนา
+# เนื่องจาก Gunicorn จะจัดการการทำงานให้
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
+    # ไม่ต้องใช้ app.run() เมื่อใช้ Gunicorn ใน production
+    pass
