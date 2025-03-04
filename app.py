@@ -55,5 +55,4 @@ def predict():
 # ปรับเปลี่ยนการเรียกใช้งาน `app.run()` ซึ่งเป็นเซิร์ฟเวอร์พัฒนา
 # เนื่องจาก Gunicorn จะจัดการการทำงานให้
 if __name__ == "__main__":
-    # ไม่ต้องใช้ app.run() เมื่อใช้ Gunicorn ใน production
-    pass
+    app.run(debug=True)
