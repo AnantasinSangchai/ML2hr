@@ -1,17 +1,6 @@
-import os
-from flask import Flask, render_template, request, jsonify
-import pickle
-import pandas as pd
-
-app = Flask(__name__)
-
-@app.route('/')
-def home():
-    return render_template('index.html')
-
 @app.route('/predict', methods=['POST'])
 def predict():
-    # รับค่าจากผู้ใช้
+    # รับค่าจากฟอร์ม
     complain = int(request.form['complain'])
     age = int(request.form['age'])
     is_active = int(request.form['is_active'])
@@ -24,7 +13,7 @@ def predict():
     geography = geo_map[geography]
 
     # สร้าง DataFrame สำหรับโมเดล
-    input_df = pd.DataFrame([[complain, age, is_active, num_products, geography, balance]],
+    input_df = pd.DataFrame([[complain, age, is_active, num_products, geography, balance]], 
                             columns=["Complain", "Age", "IsActiveMember", "NumOfProducts", "Geography", "Balance"])
 
     try:
@@ -50,9 +39,4 @@ def predict():
     else:
         result = f"✅ ลูกค้ารายนี้มีแนวโน้มที่จะอยู่ต่อ ({(1 - probability):.2%} ความน่าจะเป็น)"
     
-    return jsonify({'prediction': result})
-
-# ปรับเปลี่ยนการเรียกใช้งาน `app.run()` ซึ่งเป็นเซิร์ฟเวอร์พัฒนา
-# เนื่องจาก Gunicorn จะจัดการการทำงานให้
-if __name__ == "__main__":
-    app.run(debug=True)
+    return jsonify({'prediction': result})  # ส่งผลลัพธ์กลับในรูปแบบ JSON
