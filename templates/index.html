@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h2 class="mt-4">🔍 Customer Churn Prediction</h2>
-        <form id="predictForm">
+        <form action="/predict" method="POST">
             <div class="form-group">
                 <label for="complain">ลูกค้าเคยร้องเรียนหรือไม่?</label>
                 <select class="form-control" id="complain" name="complain">
@@ -44,32 +44,13 @@
                 <label for="balance">ยอดเงินในบัญชี</label>
                 <input type="number" class="form-control" id="balance" name="balance" min="0.0" max="500000.0" value="50000.0">
             </div>
-            <button type="button" class="btn btn-primary" onclick="predictChurn()">ทำนายผลลัพธ์</button>
+            <button type="submit" class="btn btn-primary">ทำนายผลลัพธ์</button>
         </form>
         <br>
         <div id="result"></div>
     </div>
-
     <script>
-        function predictChurn() {
-            // รับข้อมูลจากฟอร์ม
-            var complain = document.getElementById('complain').value;
-            var age = document.getElementById('age').value;
-            var is_active = document.getElementById('is_active').value;
-            var num_products = document.getElementById('num_products').value;
-            var geography = document.getElementById('geography').value;
-            var balance = document.getElementById('balance').value;
-
-            // ตัวอย่างการทำนายผล (ไม่ใช่โมเดลจริง)
-            var churnPrediction = (age > 50 && complain == 1) || balance < 10000 ? 'ทำนายว่า: ลูกค้าจะลาออก' : 'ทำนายว่า: ลูกค้าจะอยู่';
-
-            // แสดงผลการทำนาย
-            document.getElementById('result').innerHTML = '<div class="alert alert-info">' + churnPrediction + '</div>';
-        }
+        // ใช้ JavaScript เพื่อจัดการการแสดงผลของการทำนายผล
     </script>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
