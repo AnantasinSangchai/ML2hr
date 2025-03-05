@@ -1,3 +1,15 @@
+import os
+from flask import Flask, render_template, request, jsonify
+import pickle
+import pandas as pd
+
+# ประกาศตัวแปร app ของ Flask
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
 @app.route('/predict', methods=['POST'])
 def predict():
     # รับค่าจากฟอร์ม
@@ -39,4 +51,8 @@ def predict():
     else:
         result = f"✅ ลูกค้ารายนี้มีแนวโน้มที่จะอยู่ต่อ ({(1 - probability):.2%} ความน่าจะเป็น)"
     
-    return jsonify({'prediction': result})  # ส่งผลลัพธ์กลับในรูปแบบ JSON
+    return jsonify({'prediction': result})
+
+# กำหนดให้ Gunicorn ใช้ตัวแปร app
+if __name__ == "__main__":
+    app.run(debug=True)
