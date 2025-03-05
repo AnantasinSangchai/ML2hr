@@ -56,16 +56,16 @@
         $("#prediction-form").submit(function(event) {
             event.preventDefault();  // ป้องกันการโหลดหน้าใหม่
 
-            // รวบรวมข้อมูลจากฟอร์ม
-            var formData = $(this).serialize();
+            var formData = $(this).serialize();  // รวบรวมข้อมูลจากฟอร์ม
 
-            // ส่งข้อมูลไปที่ /predict ผ่าน POST
             $.post("/predict", formData, function(data) {
-                // แสดงผลลัพธ์ที่ได้รับจาก Flask
-                $("#result").html(`<h4>${data.prediction}</h4>`);
+                if (data.prediction) {
+                    $("#result").html(`<h4>${data.prediction}</h4>`);  // แสดงผลทำนาย
+                } else {
+                    $("#result").html("<h4>เกิดข้อผิดพลาดในการทำนาย กรุณาลองใหม่อีกครั้ง</h4>");
+                }
             }).fail(function() {
-                // หากเกิดข้อผิดพลาดในการทำนาย
-                $("#result").html("<h4>เกิดข้อผิดพลาดในการทำนาย กรุณาลองใหม่อีกครั้ง</h4>");
+                $("#result").html("<h4>ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาลองใหม่อีกครั้ง</h4>");
             });
         });
     </script>
