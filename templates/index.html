@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Churn Prediction</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
     <div class="container">
         <h2 class="mt-4">🔍 Customer Churn Prediction</h2>
-        <form action="/predict" method="POST">
+        <form id="prediction-form">
             <div class="form-group">
                 <label for="complain">ลูกค้าเคยร้องเรียนหรือไม่?</label>
                 <select class="form-control" id="complain" name="complain">
@@ -46,11 +47,27 @@
             </div>
             <button type="submit" class="btn btn-primary">ทำนายผลลัพธ์</button>
         </form>
-        <br>
-        <div id="result"></div>
+
+        <div id="result" class="mt-4"></div>
     </div>
+
     <script>
-        // ใช้ JavaScript เพื่อจัดการการแสดงผลของการทำนายผล
+        // เมื่อฟอร์มถูกส่ง
+        $("#prediction-form").submit(function(event) {
+            event.preventDefault();  // ป้องกันการโหลดหน้าใหม่
+
+            // รวบรวมข้อมูลจากฟอร์ม
+            var formData = $(this).serialize();
+
+            // ส่งข้อมูลไปที่ /predict ผ่าน POST
+            $.post("/predict", formData, function(data) {
+                // แสดงผลลัพธ์ที่ได้รับจาก Flask
+                $("#result").html(`<h4>${data.prediction}</h4>`);
+            }).fail(function() {
+                // หากเกิดข้อผิดพลาดในการทำนาย
+                $("#result").html("<h4>เกิดข้อผิดพลาดในการทำนาย กรุณาลองใหม่อีกครั้ง</h4>");
+            });
+        });
     </script>
 </body>
 </html>
